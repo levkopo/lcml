@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="lcml-js-1.0.0">
+    <output-path>D:\IdeaProjects\lcml\build\libs</output-path>
+    <root id="archive" name="lcml-js-1.0.0.jar">
+      <element id="module-output" name="lcml.jsMain" />
+    </root>
+  </artifact>
+</component>
