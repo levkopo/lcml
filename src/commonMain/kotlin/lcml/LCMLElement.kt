@@ -11,7 +11,7 @@ abstract class LCMLElement<GetterValue>(private val lexer: LCMLLexer?) {
             Token.Type.LONG -> lexer.currentToken!!.value.toLong()
             Token.Type.INTEGER -> lexer.currentToken!!.value.toInt()
             Token.Type.STRING -> lexer.currentToken!!.value
-            else -> throw Exception()
+            else -> throw LCMLException(lexer!!, "Invalid input: expected primitive value")
         }
     }
 

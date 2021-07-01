@@ -66,6 +66,8 @@ class LCMLObject(
             response += when (value) {
                 is LCMLElement<*> -> key+value.toFullString()
                 is String -> "$key=\"$value\""
+                is Int -> "$key=${value}i"
+                is Long -> "$key=${value}l"
                 else -> "$key=$value"
             }
         }

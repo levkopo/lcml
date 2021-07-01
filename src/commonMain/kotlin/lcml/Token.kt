@@ -15,10 +15,10 @@ class Token(val type: Type, val value: String) {
         BOOL ("true|false"),
         NULL ("null"),
         STRING ("\"([^\"]+)\"|\"()\"|\'([^\']+)\'|\'()\'"),
-        DOUBLE ("\\d*\\.\\d+|\\-\\d*.\\d+"),
-        LONG ("(\\d+|\\-\\d+)[lL]"),
-        INTEGER ("\\d+|\\-\\d+"),
-        IDENTIFIER ("(\\w+)");
+        DOUBLE ("-?\\d*\\.\\d+|(-?\\d+)[dD]"),
+        LONG ("(-?\\d+)[lL]"),
+        INTEGER ("(-?\\d+)[iI]"),
+        IDENTIFIER ("\\w+");
 
         private val regex = Regex("^$regex")
 
