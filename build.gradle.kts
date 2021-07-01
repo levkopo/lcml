@@ -38,20 +38,16 @@ kotlin {
     
     sourceSets {
         val commonMain by getting
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
         val jvmMain by getting
         val jvmTest by getting {
             dependencies {
                 implementation("junit:junit:4.13.2")
+                implementation(kotlin("test"))
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
             }
         }
         val jsMain by getting
-        val jsTest by getting
         val nativeMain by getting
-        val nativeTest by getting
     }
 }
