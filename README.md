@@ -1,6 +1,7 @@
 # LCML
-LC Markup Language
 [![CircleCI](https://circleci.com/gh/levkopo/lcml.svg?style=svg)](https://circleci.com/gh/levkopo/lcml)
+
+LC Markup Language
 
 ## Example
 ```lcml
