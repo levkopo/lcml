@@ -1,15 +1,16 @@
 package lcml
 
 class LCMLObject(
-    lexer: LCMLLexer,
-    end: (LCMLLexer) -> Boolean): LCMLElement(lexer) {
+    lexer: LCMLLexer?,
+    end: (LCMLLexer) -> Boolean): LCMLElement<String>(lexer) {
 
     private val map = HashMap<String, Any?>()
 
     constructor(input: String): this(LCMLLexer(input), { lexer -> lexer.finished })
+    constructor(): this(null, { false })
 
     init {
-        while (!end(lexer)){
+        while (lexer!=null&&!end(lexer)){
             if(lexer.currentToken!!.type!=Token.Type.IDENTIFIER)
                 throw Exception()
 
@@ -63,12 +64,69 @@ class LCMLObject(
         var response = ""
         for((key, value) in map){
             response += when (value) {
-                is LCMLElement -> key+value.toFullString()
+                is LCMLElement<*> -> key+value.toFullString()
                 is String -> "$key=\"$value\""
                 else -> "$key=$value"
             }
         }
 
         return response
+    }
+
+    override fun get(key: String, defaultValue: Any?): Any? {
+        return map[key]?:defaultValue
+    }
+
+    override fun getArray(key: String, defaultValue: LCMLArray?): LCMLArray? {
+        return map[key]?.let {
+            if(it is LCMLArray) it else defaultValue
+        }?:defaultValue
+    }
+
+    override fun getObject(key: String, defaultValue: LCMLObject?): LCMLObject? {
+        return map[key]?.let {
+            if(it is LCMLObject) it else defaultValue
+        }?:defaultValue
+    }
+
+    override fun getString(key: String, defaultValue: String?): String? {
+        return map[key]?.let {
+            if(it is String) it else defaultValue
+        }?:defaultValue
+    }
+
+    override fun getInt(key: String, defaultValue: Int?): Int? {
+        return map[key]?.let {
+            if(it is Int) it else defaultValue
+        }?:defaultValue
+    }
+
+    override fun getLong(key: String, defaultValue: Long?): Long? {
+        return map[key]?.let {
+            if(it is Long) it else defaultValue
+        }?:defaultValue
+    }
+
+    override fun getDouble(key: String, defaultValue: Double?): Double? {
+        return map[key]?.let {
+            if(it is Double) it else defaultValue
+        }?:defaultValue
+    }
+
+    override fun getBoolean(key: String, defaultValue: Boolean?): Boolean? {
+        return map[key]?.let {
+            if(it is Boolean) it else defaultValue
+        }?:defaultValue
+    }
+
+    override fun getElementAttributes(key: String): LCMLObject? {
+        return map[key]?.let {
+            if(it is LCMLElement<*>) it.attributes else null
+        }
+    }
+
+    override fun put(key: String, value: Any?): LCMLObject {
+        map[key] = value
+        return this
     }
 }

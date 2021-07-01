@@ -4,8 +4,7 @@ val BLANK_CHARS = setOf(8.toChar(), 9.toChar(),
     11.toChar(), 12.toChar(), 32.toChar())
 
 class LCMLException(lexer: LCMLLexer, message: String):
-    Exception("$message on line ${lexer.position.line}, "+
-            "position ${lexer.position.position}")
+    Exception("$message ${lexer.position}")
 
 class LCMLLexer(originalInput: String){
     var input = StringBuilder(originalInput)
