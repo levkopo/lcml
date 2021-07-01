@@ -12,7 +12,7 @@ class LCMLObject(
     init {
         while (lexer!=null&&!end(lexer)){
             if(lexer.currentToken!!.type!=Token.Type.IDENTIFIER)
-                throw Exception()
+                throw LCMLException(lexer, "Invalid input: expected name of parameter")
 
             val name = lexer.currentToken!!.value
             var attributes: LCMLObject? = null
@@ -48,7 +48,7 @@ class LCMLObject(
                     parseValue()
                 }
 
-                else -> throw Exception()
+                else -> throw LCMLException(lexer, "Invalid input: expected value")
             }
 
             lexer.moveAhead()

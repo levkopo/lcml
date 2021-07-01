@@ -4,9 +4,9 @@ val BLANK_CHARS = setOf(8.toChar(), 9.toChar(),
     11.toChar(), 12.toChar(), 32.toChar())
 
 class LCMLException(lexer: LCMLLexer, message: String):
-    Exception("$message ${lexer.position}")
+    Exception("$message\n\r${lexer.viewToken()}")
 
-class LCMLLexer(originalInput: String){
+class LCMLLexer(private val originalInput: String){
     var input = StringBuilder(originalInput)
     var currentToken: Token? = null
     var finished: Boolean = false
@@ -14,6 +14,13 @@ class LCMLLexer(originalInput: String){
 
     init {
         moveAhead()
+    }
+
+    fun viewToken(): String {
+        var startOfToken = originalInput.split(Regex("\\R"), position.line+1)[position.line-1]
+        startOfToken += "\n\r"+(" ".repeat(position.position))+("^".repeat(currentToken!!.value.length))+"\n\r"
+
+        return startOfToken
     }
 
     fun moveAhead(needType: Token.Type? = null): Token {

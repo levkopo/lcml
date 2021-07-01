@@ -11,13 +11,16 @@ repositories {
 
 kotlin {
     jvm {
+        withJava()
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
         }
+
         testRuns["test"].executionTask.configure {
             useJUnit()
         }
     }
+
     js(LEGACY) {
         browser {
             commonWebpackConfig {

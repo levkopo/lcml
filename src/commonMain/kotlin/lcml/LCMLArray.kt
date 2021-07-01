@@ -42,7 +42,7 @@ class LCMLArray(lexer: LCMLLexer?,
                     parseValue()
                 }
 
-                else -> throw Exception()
+                else -> throw LCMLException(lexer, "Invalid input: expected value")
             })
 
             lexer.moveAhead()
