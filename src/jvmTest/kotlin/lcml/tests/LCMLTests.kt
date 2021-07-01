@@ -1,5 +1,6 @@
 package lcml.tests
 
+import lcml.LCMLArray
 import lcml.LCMLObject
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -40,6 +41,56 @@ class LCMLTests {
         assertEquals(1L, reparseObject.getLong("long"), "Long not encoded")
         assertEquals(1.toDouble(), reparseObject.getDouble("double"), "Double not encoded")
         assertNull(reparseObject.get("valnull"), "Null not encoded")
+    }
 
+    @Test
+    fun parseArray() {
+        val ignoreList = LCMLArray("""
+            "VitiaCat"
+            "Unknown Number"
+            123i
+            456l
+        """.trimIndent())
+
+        assertEquals("VitiaCat", ignoreList.getString(0))
+        assertEquals("Unknown Number", ignoreList.getString(1))
+        assertEquals(123, ignoreList.getInt(2))
+        assertEquals(456L, ignoreList.getLong(3))
+    }
+
+    @Test
+    fun exampleTest() {
+        val lcmlObject = LCMLObject("""
+            document {
+                title = "LCML simple document"
+                authors [
+                    "levkopo"
+                ]
+            }
+
+            database {
+                server = "192.168.0.1"
+                port = 8923i
+                maxConnections = 50i
+            }
+
+            servers (
+                default = 2i
+            ) [
+                (type = "alpha"){
+                    ip = "127.0.0.1"
+                    port = 80i
+                }
+                (type = "beta"){
+                    ip = "127.0.0.2"
+                    port = 80i
+                }
+                (type = "release"){
+                    ip = "127.0.0.3"
+                    port = 433i
+                }
+            ]
+        """.trimIndent())
+        println(lcmlObject)
     }
 }

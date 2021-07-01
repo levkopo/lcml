@@ -4,10 +4,11 @@ val BLANK_CHARS = setOf(8.toChar(), 9.toChar(),
     11.toChar(), 12.toChar(), 32.toChar())
 
 class LCMLException(lexer: LCMLLexer, message: String):
-    Exception("$message\n\r${lexer.viewToken()}")
+    Exception("$message ${lexer.position}\n\r${lexer.viewToken()}")
 
 class LCMLLexer(private val originalInput: String){
-    var input = StringBuilder(originalInput)
+    private var input = StringBuilder(originalInput)
+
     var currentToken: Token? = null
     var finished: Boolean = false
     var position = Position(1, 1)
@@ -18,7 +19,8 @@ class LCMLLexer(private val originalInput: String){
 
     fun viewToken(): String {
         var startOfToken = originalInput.split(Regex("\\R"), position.line+1)[position.line-1]
-        startOfToken += "\n\r"+(" ".repeat(position.position))+("^".repeat(currentToken!!.value.length))+"\n\r"
+        startOfToken += "\n\r"+(" ".repeat(position.position-currentToken!!.fullValue.length-1))+
+                ("^".repeat(currentToken!!.fullValue.length))+"\n\r"
 
         return startOfToken
     }
@@ -83,7 +85,7 @@ class LCMLLexer(private val originalInput: String){
         }
 
         if(tokenScan!=null&&tokenType!=null){
-            currentToken = Token(tokenType, tokenScan.groups.lastNotNull()!!.value)
+            currentToken = Token(tokenType, tokenScan.groups.lastNotNull()!!.value, tokenScan.value)
             input = input.deleteRange(0, tokenScan.value.length)
             position = Position(position.line, position.position
                     +currentToken!!.value.length)

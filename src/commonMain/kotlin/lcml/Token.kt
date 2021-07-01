@@ -1,6 +1,6 @@
 package lcml
 
-class Token(val type: Type, val value: String) {
+class Token(val type: Type, val value: String, val fullValue: String) {
 
     enum class Type(regex: String) {
         NEW_LINE ("\\R"),

@@ -11,7 +11,7 @@ class LCMLArray(lexer: LCMLLexer?,
         while (lexer!=null&&!end(lexer)) {
             var attributes: LCMLObject? = null
 
-            var type = lexer.moveAhead(Token.Type.OPEN).type
+            var type = lexer.currentToken!!.type
             if (type == Token.Type.OPEN) {
                 lexer.moveAhead()
                 attributes = LCMLObject(lexer) { it.currentToken!!.type == Token.Type.CLOSE }
@@ -34,15 +34,12 @@ class LCMLArray(lexer: LCMLLexer?,
                     }
                 }
 
-                Token.Type.ASSIGN -> {
+                else -> {
                     if (attributes != null)
                         throw Exception()
 
-                    lexer.moveAhead()
                     parseValue()
                 }
-
-                else -> throw LCMLException(lexer, "Invalid input: expected value")
             })
 
             lexer.moveAhead()
